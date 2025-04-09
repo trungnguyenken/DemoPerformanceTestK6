@@ -1,11 +1,6 @@
 pipeline {
   agent any
-  stages {
-    stage('verify k6') {
-      steps {
-        sh 'k6 version'
-      }
-    }
+  stages {    
     stage('run k6 test') {
       steps {
         sh 'k6 run performance-testing-main/performance-testing/Jenkins/script.js'
