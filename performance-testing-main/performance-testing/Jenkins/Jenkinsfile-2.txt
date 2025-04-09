@@ -8,7 +8,7 @@ pipeline {
     }
     stage('run k6 test') {
       steps {
-        bat 'F:/Bolt/DemoPerformanceTestK6/performance-testing-main/performance-testing/tests/k6.exe run --out xk6-influxdb=http://localhost:8086?org=Demo&bucket=k6&token=CR9LgZA9rfNDWMDcuqDRIXHHhf489hwFT71jUBCi_zBJOSeQvzsmna8inIz24UzIi0mf2bGTR1GCvW48mJ-E_A== performance-testing-main/performance-testing/tests/simple-test.js'
+        bat 'F:/Bolt/DemoPerformanceTestK6/performance-testing-main/performance-testing/tests/k6.exe run --out "xk6-influxdb=http://localhost:8086?org=Demo&bucket=k6&token=CR9LgZA9rfNDWMDcuqDRIXHHhf489hwFT71jUBCi_zBJOSeQvzsmna8inIz24UzIi0mf2bGTR1GCvW48mJ-E_A==" performance-testing'
       }
     }
   }
