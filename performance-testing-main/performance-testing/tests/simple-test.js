@@ -1,10 +1,12 @@
 import http from 'k6/http';
 
+const config = JSON.parse(open('./config.json'));
+
 export const options = {
-    vus: 1,
+    vus: Number(config.vus),
     duration: '2s'
 };
 
 export default () => {
-    http.get('https://fakerestapi.azurewebsites.net');
+    http.get(config.url);
 };
