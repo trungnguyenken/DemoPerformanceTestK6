@@ -1,14 +1,35 @@
 pipeline {
   agent any
+  parameters {
+    string(name: 'VUS', defaultValue: '1', description: '(virtual users)')
+    string(name: 'TARGET_URL', defaultValue: 'https://fakerestapi.azurewebsites.net', description: 'URL test')
+  }
   stages {
     stage('verify k6') {
       steps {
         bat 'k6 version'
       }
     }
+    stage('Update config.json') {
+      steps {
+        script {
+          def configPath = 'performance-testing-main/performance-testing/tests/config.json'
+          def updatedJson = """{
+  "vus": ${params.VUS},
+  "url": "${params.TARGET_URL}"
+}"""
+          writeFile file: configPath, text: updatedJson
+          echo "✅ Updated config.json with VUS=${params.VUS} and URL=${params.TARGET_URL}"
+        }
+      }
+    }    
     stage('run k6 test') {
       steps {
-        bat 'k6 run performance-testing-main/performance-testing/Jenkins/script.js'
+        writeFile file: 'config.json', text: """{
+          "vus": ${params.VUS},
+          "url": "${params.TARGET_URL}"
+        }"""
+        bat 'k6 run --out influxdb=http://localhost:8086/k6 performance-testing-main/performance-testing/tests/simple-test.js'
       }
     }
   }
